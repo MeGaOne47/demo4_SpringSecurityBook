@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Book List</title>
+    <th:block th:replace="layout :: Link-css"></th:block>
+</head>
+<body>
+<th:block th:replace="layout :: header"></th:block>
+<div class="container">
+    <h1>My Book List</h1>
+    <div th:if="${successMessage}">
+        <div class="alert alert-success" th:text="${successMessage}"></div>
+    </div>
+    <div class="form-group">
+        <label for="searchInput">Search:</label>
+        <input type="text" id="searchInput" class="form-control">
+    </div>
+    <button id="searchButton" class="btn btn-primary">Search</button>
+
+    <table class="table">
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th sec:authorize="hasAnyAuthority('ADMIN')">Action</th>
+        </tr>
+        <tbody id="book-table-body">
+        </tbody>
+    </table>
+</div>
+<script th:src="@{/js/jquery-3.6.4.min.js}"></script>
+<script th:src="@{/js/book/list.js}"></script>
+<script th:inline="javascript">
+    var currentUser = /*[[${#authentication.principal}]]*/ null;
+    console.log(currentUser);
+</script>
+<th:block th:replace="layout :: footer"></th:block>
+</body>
+</html>

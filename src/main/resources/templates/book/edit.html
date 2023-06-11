@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Book</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>Edit Book</h1>
+    <form id="editBookForm" th:object="${book}" th:action="@{/books/edit/{id}(id=${book.id})}" method="post">
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" class="form-control" th:value="*{title}" required>
+        </div>
+        <div class="form-group">
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author" class="form-control" th:value="*{author}" required>
+        </div>
+        <div class="form-group">
+            <label for="price">Price:</label>
+            <input type="text" id="price" name="price" class="form-control" th:value="*{price}" required>
+        </div>
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <select id="category" name="category" class="form-control" required>
+                <option value="">Select a category</option>
+                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}" th:selected="${category.id == book.category.id}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+        $(document).ready(function() {
+            // Handle form submission
+            $('#editBookForm').submit(function(e) {
+                e.preventDefault();
+
+                // Get form data
+                var formData = $(this).serialize();
+
+                // Send AJAX request to update the book
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'post',
+                    data: formData,
+                    success: function(response) {
+                        alert('Book updated successfully!');
+                        window.location.href = '/books';
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 200) {
+                            alert('Book updated successfully!');
+                            window.location.href = '/books';
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
